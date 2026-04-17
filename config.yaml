@@ -1,0 +1,141 @@
+# Pest Detection System Configuration
+
+# MQTT Broker Settings
+mqtt:
+  broker_host: "localhost"
+  broker_port: 1883
+  keepalive: 60
+  topics:
+    telemetry: "field/{crop_type}/{device_id}/telemetry"
+    irrigation: "field/{crop_type}/{device_id}/irrigation"
+    alerts: "alerts/{crop_type}"
+  qos: 1
+  retain: false
+
+# Database Configuration
+database:
+  type: "sqlite"  # Options: sqlite, postgresql
+  sqlite_path: "data/pest_detection.db"
+  # PostgreSQL settings (uncomment if using PostgreSQL)
+  # postgres_host: "localhost"
+  # postgres_port: 5432
+  # postgres_db: "pest_detection"
+  # postgres_user: "admin"
+  # postgres_password: "your_password"
+
+# Sensor Configuration
+sensors:
+  temperature:
+    unit: "celsius"
+    min_value: -10
+    max_value: 50
+    calibration_offset: 0.0
+  humidity:
+    unit: "percent"
+    min_value: 0
+    max_value: 100
+    calibration_offset: 0.0
+  reading_interval: 300  # seconds (5 minutes)
+
+# Crop Type Mappings
+crops:
+  tomato:
+    name: "Tomato"
+    scientific_name: "Solanum lycopersicum"
+    pests: ["aphids", "whitefly", "hornworm"]
+  rice:
+    name: "Rice"
+    scientific_name: "Oryza sativa"
+    pests: ["stem_borer", "leaf_folder", "brown_planthopper"]
+  wheat:
+    name: "Wheat"
+    scientific_name: "Triticum aestivum"
+    pests: ["aphids", "army_worm", "rust_fungus"]
+  cotton:
+    name: "Cotton"
+    scientific_name: "Gossypium"
+    pests: ["bollworm", "whitefly", "jassids"]
+
+# Pest Information
+pests:
+  aphids:
+    name: "Aphids"
+    optimal_temp_range: [20, 28]
+    optimal_humidity_range: [60, 80]
+    growth_cycle_days: 7
+  whitefly:
+    name: "Whitefly"
+    optimal_temp_range: [25, 32]
+    optimal_humidity_range: [70, 90]
+    growth_cycle_days: 14
+  hornworm:
+    name: "Tomato Hornworm"
+    optimal_temp_range: [22, 30]
+    optimal_humidity_range: [65, 85]
+    growth_cycle_days: 10
+  stem_borer:
+    name: "Rice Stem Borer"
+    optimal_temp_range: [26, 32]
+    optimal_humidity_range: [75, 95]
+    growth_cycle_days: 21
+  bollworm:
+    name: "Cotton Bollworm"
+    optimal_temp_range: [24, 32]
+    optimal_humidity_range: [60, 80]
+    growth_cycle_days: 14
+
+# CNN Model Configuration
+model:
+  time_window_hours: 168  # 7 days
+  features: ["temperature", "humidity"]
+  sequence_length: 168  # hourly readings for 7 days
+  cnn_filters: [64, 128]
+  kernel_sizes: [5, 3]
+  pool_size: 2
+  dropout_rate: 0.3
+  dense_units: 128
+  learning_rate: 0.001
+  batch_size: 32
+  epochs: 100
+  early_stopping_patience: 10
+  model_save_path: "models/pest_prediction_model"
+
+# NDVI Configuration
+ndvi:
+  satellite_source: "sentinel2"  # Options: sentinel2, landsat8
+  cloud_threshold: 20  # Max cloud coverage percentage
+  historical_years: 3  # Years of historical data to compare
+  anomaly_threshold: 1.5  # Standard deviations for anomaly detection
+  update_frequency_days: 7
+
+# Irrigation Control
+irrigation:
+  auto_mode: false  # Set to true for automated control
+  valve_gpio_pin: 17  # Raspberry Pi GPIO pin (BCM numbering)
+  max_duration_minutes: 60
+  cooldown_minutes: 30
+
+# API Configuration
+api:
+  host: "0.0.0.0"
+  port: 8000
+  debug: false
+  cors_origins: ["*"]
+  workers: 4
+
+# Alert Thresholds
+alerts:
+  pest_risk:
+    low: 0.3
+    medium: 0.6
+    high: 0.8
+  ndvi_drop_threshold: 0.15  # Alert if NDVI drops by more than this
+  prediction_horizon_days: 10
+
+# Logging Configuration
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  log_file: "logs/pest_detection.log"
+  rotation: "10 MB"
+  retention: "30 days"
+  format: "{time:YYYY-MM-DD HH:mm:ss} | {level} | {module}:{function}:{line} | {message}"
