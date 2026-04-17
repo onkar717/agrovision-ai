@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pest Detection Dashboard</title>
+    <meta name="description" content="AI-powered pest prediction and vegetation health monitoring for smart agriculture">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <h1>🌾 Pest Detection System</h1>
+                <p class="subtitle">AI-Powered Agricultural Intelligence</p>
+            </div>
+            <div class="device-selector">
+                <label for="deviceSelect">Select Device:</label>
+                <select id="deviceSelect">
+                    <option value="">Loading devices...</option>
+                </select>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Grid -->
+        <main class="dashboard">
+            <!-- Real-time Sensor Data Card -->
+            <section class="card sensor-card">
+                <h2>📡 Real-Time Sensor Data</h2>
+                <div class="sensor-readings">
+                    <div class="reading-item">
+                        <div class="reading-icon">🌡️</div>
+                        <div class="reading-content">
+                            <span class="reading-label">Temperature</span>
+                            <span class="reading-value" id="temperature">--</span>
+                            <span class="reading-unit">°C</span>
+                        </div>
+                    </div>
+                    <div class="reading-item">
+                        <div class="reading-icon">💧</div>
+                        <div class="reading-content">
+                            <span class="reading-label">Humidity</span>
+                            <span class="reading-value" id="humidity">--</span>
+                            <span class="reading-unit">%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="last-update">
+                    Last update: <span id="lastUpdate">--</span>
+                </div>
+                <button class="btn btn-primary" id="refreshBtn">🔄 Refresh Data</button>
+            </section>
+
+            <!-- Pest Risk Alert Card -->
+            <section class="card pest-card">
+                <h2>🐛 Pest Risk Prediction</h2>
+                <div id="pestAlert" class="pest-alert">
+                    <div class="alert-content">
+                        <div class="risk-indicator" id="riskIndicator">
+                            <div class="risk-level" id="riskLevel">--</div>
+                            <div class="risk-percentage" id="riskPercentage">--%</div>
+                        </div>
+                        <div class="alert-details">
+                            <p id="alertMessage">Click "Run Prediction" to analyze pest risk</p>
+                            <div class="timeline" id="timeline" style="display: none;">
+                                <span class="timeline-label">Estimated timeline:</span>
+                                <span class="timeline-value" id="timelineValue">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-secondary" id="predictBtn">🔍 Run Prediction</button>
+            </section>
+
+            <!-- NDVI Vegetation Health Card -->
+            <section class="card ndvi-card">
+                <h2>🛰️ Vegetation Health (NDVI)</h2>
+                <div class="ndvi-container">
+                    <div class="ndvi-current">
+                        <span class="ndvi-label">Current NDVI</span>
+                        <span class="ndvi-value" id="currentNDVI">--</span>
+                    </div>
+                    <div class="ndvi-status" id="ndviStatus">
+                        <p>Loading NDVI data...</p>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="ndviChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Irrigation Control Card -->
+            <section class="card irrigation-card">
+                <h2>💦 Irrigation Control</h2>
+                <div class="irrigation-status">
+                    <div class="status-indicator" id="valveStatus">
+                        <div class="status-icon">🚰</div>
+                        <div class="status-text">
+                            <span class="status-label">Valve Status</span>
+                            <span class="status-value" id="valveState">CLOSED</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="irrigation-controls">
+                    <button class="btn btn-success" id="activateBtn">▶️ Activate Valve</button>
+                    <button class="btn btn-danger" id="deactivateBtn">⏹️ Deactivate Valve</button>
+                </div>
+                <div class="irrigation-duration">
+                    <label for="durationInput">Duration (minutes):</label>
+                    <input type="number" id="durationInput" min="1" max="60" value="30">
+                </div>
+            </section>
+
+            <!-- Sensor History Chart -->
+            <section class="card chart-card">
+                <h2>📊 Sensor History (24h)</h2>
+                <div class="chart-container">
+                    <canvas id="sensorChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Recommendations Card -->
+            <section class="card recommendations-card">
+                <h2>💡 Recommendations</h2>
+                <div id="recommendations">
+                    <p>Run pest prediction to receive personalized recommendations.</p>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 AI-Powered Pest Detection System | Predictive Agriculture Intelligence</p>
+            <p>Status: <span id="connectionStatus" class="status-online">⚫ Online</span></p>
+        </footer>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
